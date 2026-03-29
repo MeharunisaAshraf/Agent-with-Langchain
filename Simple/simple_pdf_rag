@@ -18,7 +18,7 @@ print(api_key)
 # 2. LOAD PDF
 # ---------------------------------------------------
 
-file_path = "Meharunnisa - CV.pdf"
+file_path = "../Meharunnisa - CV.pdf"
 loader = PyPDFLoader(file_path)
 docs = loader.load()
 
@@ -27,7 +27,7 @@ docs = loader.load()
 # ---------------------------------------------------
 
 text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1030,
+    chunk_size=230,
     chunk_overlap=20,
     length_function=len,
     is_separator_regex=False,
@@ -109,11 +109,14 @@ llm = ChatOpenAI(model="gpt-4o-mini")
 # 9. ASK QUESTION
 # ---------------------------------------------------
 
-question = "With what job role she started working?"
-
+question = """
+From the CV, identify all job roles with their dates.
+Then determine the earliest one.
+What is the starting date?
+"""
 # Retrieve relevant chunks
 docs = retriever.invoke(question)
-[print(doc.page_content, '\n\n') for doc in docs]
+
 context = "\n\n".join([doc.page_content for doc in docs])
 
 # Format prompt
